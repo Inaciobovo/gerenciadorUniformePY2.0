@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sitema de Uniformes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h2>Cadastrar Uniforme</h2>
+    
+    <form action="/cadastrar" method="POST" class="mb-5">
+        <input type="text" name="nome" placeholder="Nome (Ex: Camisa Polo)" class="form-control mb-2" required>
+        <select name="tamanho" class="form-control mb-2">
+            <option>P</option><option>M</option><option>G</option><option>GG</option>
+        </select>
+        <input type="number" name="quantidade" placeholder="Quantidade" class="form-control mb-2" required>
+        <input type="text" name="setor" placeholder="Setor (Ex: Açougue)" class="form-control mb-2" required>
+        <button type="submit" class="btn btn-success">Salvar no Sistema</button>
+    </form>
+
+    <h3>Itens em Estoque</h3>
+    <table class="table">
+        <tr><th>Nome</th><th>Tamanho</th><th>Qtd</th><th>Setor</th></tr>
+        {% for item in estoque %}
+        <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.tamanho }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>{{ item.setor }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
