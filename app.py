@@ -11,6 +11,7 @@ def index ():
 
 @app.route ('/cadastrar', methods=['POST'])
 def cadastrar():
+    id=str(len(estoque)+1)
     nome = request.form.get('nome')
     tamanho = request.form.get('tamanho')
     quantidade = int(request.form.get('quantidade'))
