@@ -54,7 +54,7 @@ def cadastrar():
 
         return redirect(url_for('painel'))
 
-    return render_template('cadastro.html')
+    return render_template('cadastroUniforme.html')
 
 
 # 🚪 LOGOUT
