@@ -1,32 +1,67 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
+from database import criar_tabela, buscar_usuario
 from models import Uniforme
 
-app = Flask (__name__)
+app = Flask(__name__)
+app.secret_key = "segredo123"  # necessário para session
+
+criar_tabela()
 
 estoque = []
 
-@app.route('/')
-def index ():
-    return render_template ('login.html', estoque = estoque)
+# 🔐 LOGIN
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form.get('username')
+        senha = request.form.get('password')
 
-@app.route ('/cadastrar', methods=['POST'])
+        user = buscar_usuario(usuario, senha)
+
+        if user:
+            session['usuario'] = usuario
+            return redirect(url_for('painel'))
+        else:
+            return render_template('login.html', erro="Usuário ou senha inválidos")
+
+    return render_template('login.html')
+
+
+# 📊 PAINEL
+@app.route('/painel')
+def painel():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    return render_template('painel.html', estoque=estoque)
+
+
+# ➕ CADASTRO
+@app.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar():
-    id=str(len(estoque)+1)
-    nome = request.form.get('nome')
-    tamanho = request.form.get('tamanho')
-    quantidade = int(request.form.get('quantidade'))
-    setor = request.form.get('setor')
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
 
-    novo_item  = Uniforme (id, nome, tamanho, quantidade, setor)
-    estoque.append(novo_item)
+    if request.method == 'POST':
+        id = str(len(estoque) + 1)
+        nome = request.form.get('nome')
+        tamanho = request.form.get('tamanho')
+        quantidade = int(request.form.get('quantidade'))
+        setor = request.form.get('setor')
 
-    return render_template('cadastro.html', estoque=estoque, mensagem= "cadastro realizado com sucesso!")
+        novo_item = Uniforme(id, nome, tamanho, quantidade, setor)
+        estoque.append(novo_item)
+
+        return redirect(url_for('painel'))
+
+    return render_template('cadastro.html')
 
 
-
-
-
-
+# 🚪 LOGOUT
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
