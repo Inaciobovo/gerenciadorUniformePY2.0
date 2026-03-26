@@ -5,7 +5,7 @@ from models import Uniforme
 app = Flask(__name__)
 app.secret_key = "segredo123"  # necessário para session
 
-criar_tabela()
+#criar_tabela()
 
 estoque = []
 
