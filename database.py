@@ -45,7 +45,7 @@ def buscar_usuario(username, password):
     conn.close()
     return usuario
 
-def cadastar_uniforme(descricao, valor, quantidade):
+def salvar_uniforme_banco(descricao, valor, quantidade):
     conn = conectar()
     cursor = conn.cursor()
 
@@ -53,3 +53,7 @@ def cadastar_uniforme(descricao, valor, quantidade):
     INSERT INTO Uniformes (descricao, valor, quantidade)
     values(?, ?, ?)
 ''', (descricao, valor, quantidade))
+    
+    conn.commit()
+    conn.close()
+

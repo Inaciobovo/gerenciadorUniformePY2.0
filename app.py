@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from database import criar_tabela, buscar_usuario
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from database import criar_tabela, buscar_usuario, salvar_uniforme_banco
 from models import Uniforme
 
 app = Flask(__name__)
@@ -56,6 +56,21 @@ def cadastrar():
 
     return render_template('cadastroUniforme.html')
 
+@app.route('/cadastrar-uniforme', methods = ['POST'])
+def cadastrar_uniforme():
+    if request.method == 'POST':
+        descricao = request.form.get('descricao')
+        valor = request.form.get ('valor')
+        quantidade = request.form.get('quantidade')
+
+        try:
+            salvar_uniforme_banco(descricao, valor, quantidade)
+            flash (f"Uniforme cadastrado com sucesso")
+        
+        except Exception as e:
+            flash (f"Erro  ao cadastrar: {e} ")
+        
+        return redirect (url_for('painel'))            
 
 # 🚪 LOGOUT
 @app.route('/logout')

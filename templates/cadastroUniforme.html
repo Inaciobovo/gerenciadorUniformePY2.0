@@ -1,34 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Sitema de Uniformes</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body class="container mt-5">
-    <h2>Cadastrar Uniforme</h2>
-    
-    <form action="/cadastrar" method="POST" class="mb-5">
-        <input type="text" name="nome" placeholder="Nome (Ex: Camisa Polo)" class="form-control mb-2" required>
-        <select name="tamanho" class="form-control mb-2">
-            <option>P</option><option>M</option><option>G</option><option>GG</option><option>G1</option><option>G2</option><option>G3</option>
-        </select>
-        <input type="number" name="quantidade" placeholder="Quantidade" class="form-control mb-2" required>
-        <input type="text" name="setor" placeholder="Setor (Ex: Açougue)" class="form-control mb-2" required>
-        <button type="submit" class="btn btn-success" style="background-color:#00BFFF;">Salvar no Sistema</button>
-        
-    </form>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Uniforme - BovoTech</title>
 
-    <h3>Itens em Estoque</h3>
-    <table class="table">
-        <tr><th>Nome</th><th>Tamanho</th><th>Qtd</th><th>Setor</th></tr>
-        {% for item in estoque %}
-        <tr>
-            <td>{{ item.nome }}</td>
-            <td>{{ item.tamanho }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>{{ item.setor }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            overflow-x: hidden;
+            background-color: #f8f9fa; /* Um cinza bem claro para destacar os cards brancos */
+        }
+
+        .sidebar {
+            height: 100vh;
+            background-color: #0d6efd;
+            position: fixed; /* Fixa a lateral para telas maiores */
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #0b5ed7;
+            padding-left: 20px;
+        }
+
+        /* Ajuste para o conteúdo não ficar por baixo da sidebar fixa */
+        .main-content {
+            margin-left: 16.66667%; 
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2 sidebar">
+            <h4 class="text-white text-center mt-3">BovoTech</h4>
+            <hr class="text-white">
+            <a href="dashboard.html">📊 Painel Principal</a>
+            <a href="uniformes.html">👕 Uniformes</a>
+            <a class="fw-bold" style="background-color: #0b5ed7;">➕ Cadastrar uniforme</a>
+            <a href="cadastrar-funcionario.html">👤 Cadastrar Funcionário</a>
+            <hr class="text-white">
+            <a href="logout">🚪 Sair</a>
+        </div>
+
+        <div class="col-md-10 p-4 main-content">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Cadastrar Novo Uniforme</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cadastro</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="card shadow border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-primary">Informações do Produto</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('cadastrar_uniforme')}}" method="POST">
+                        <div class="row g-3">
+                            
+                            <div class="col-md-12">
+                                <label for="descricao" class="form-label">Descrição / Nome do Uniforme</label>
+                                <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Ex: Camiseta Polo Azul Marinho" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="valor" class="form-label">Valor Unitário (R$)</label>
+                                <input type="number" step="0.01" class="form-control" id="valor" name="valor" placeholder="0,00" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="quantidade" class="form-label">Quantidade em Estoque</label>
+                                <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Ex: 50" required>
+                            </div>
+
+                            <div class="col-md-12 mt-4">
+                                <hr>
+                                <button type="submit" class="btn btn-primary px-4">Salvar Cadastro</button>
+                                <a href="painel" class="btn btn-outline-secondary px-4">Cancelar</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
